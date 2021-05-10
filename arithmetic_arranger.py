@@ -8,7 +8,7 @@ def arithmetic_arranger(problems, answers=False):
     addend2 = []
     columnTotal = []
     operator = []
-    
+
     # Validate and set addends, operation and total
     for i, problem in enumerate(problems):
         parts = problem.split(" ")
@@ -41,12 +41,12 @@ def arithmetic_arranger(problems, answers=False):
             spacer = ''
         # Determine larger width, but add one space to count for operator on line 2
         width = len(addend1[i]) if len(addend1[i]) > len(addend2[i]) else len(addend2[i]) 
-        width = width + 1
-        line0 += (" " * (len(addend1[i]) - width)) + addend1[i].rjust(width + 1, ' ') + spacer
-        line1 += operator[i] + addend2[i].rjust(width, ' ') + spacer
-        line2 += ("-" * (width + 1)) + spacer
+        width = width + 2
+        line0 += addend1[i].rjust(width, ' ') + spacer
+        line1 += operator[i] + addend2[i].rjust(width - 1, ' ') + spacer
+        line2 += ("-" * (width)) + spacer
         if (answers):
-            line3 += columnTotal[i].rjust(width + 1, ' ') + spacer
+            line3 += columnTotal[i].rjust(width, ' ') + spacer
     if not (answers):
         line3 = ''
     
