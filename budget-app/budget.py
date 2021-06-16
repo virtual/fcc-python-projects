@@ -1,3 +1,4 @@
+import math
 class Category:
   categories = []
   # ledger = []
@@ -26,26 +27,37 @@ class Category:
       descShort = (description[:23]) if len(description) > 23 else description.ljust(23)
       output = output + "\n" + descShort + ' ' + amtCurrency
     output = output + "\nTotal: " + str(self.get_balance())
+    catprint = self.printCategoryTitle(self.name, 30)
+    
+    return f'{catprint}{output}'
 
-    ## !TODO: Need to center the title based on length
-    return f'*************{self.name}*************{output}'
 
   def __init__(self, category):
     self.categories.append(category)
     self.ledger = []
     self.name = category
     
+  ## Center the category title based on length
+  def printCategoryTitle(self, title, length):
+    catlength = len(title)
+    registryWidth = length
+    catprint = ''
+    char = '*'
+    catprint = (math.floor((registryWidth-catlength)/2) * char) 
+    catprint = catprint + title + catprint
+    if (len(title)%2 == 1):
+      catprint += char
+    return catprint
+
   def deposit(self, amount, note = ''):
     line = {"amount": amount, "description": note}
     self.ledger.append(line)
-    # print(self.ledger)
     return True
 
   def withdraw(self, amount, note = ''):
     if (self.get_balance() >= amount):
       line = {"amount": amount * -1, "description": note}
       self.ledger.append(line)
-      # print(self.ledger)
       return True
     else:
       return False
@@ -84,8 +96,46 @@ class Category:
       return False
 
 def create_spend_chart(self, categories =[]):
-    print('100  Mew mew')
-      
+  '''
+  Creates a chart
+
+  :param list categories: list of categories
+  :return: bar chart of spending
+  :rtype: str
+
+  The chart should show the percentage spent in each category passed in to the function. The percentage spent should be calculated only with withdrawals and not with deposits. Down the left side of the chart should be labels 0 - 100. The "bars" in the bar chart should be made out of the "o" character. The height of each bar should be rounded down to the nearest 10. The horizontal line below the bars should go two spaces past the final bar. Each category name should be written vertically below the bar. There should be a title at the top that says "Percentage spent by category".
+
++ 100|          
++  90|          
++  80|          
++  70|    o     
++  60|    o     
++  50|    o     
++  40|    o     
++  30|    o     
++  20|    o  o  
++  10|    o  o  
++   0| o  o  o  
++     ----------
++      B  F  E  
++      u  o  n  
++      s  o  t  
++      i  d  e  
++      n     r  
++      e     t  
++      s     a  
++      s     i  
++            n  
++            m  
++            e  
++            n  
++            t  
+  '''
+  chart = 'Percentage spent by category\n'
+  for iter in range(100, 0, -10):
+    chart = chart + str(iter).rjust(3, ' ') + '|' + (' '*10) + '\n'
+    # print(chart)
+  return chart
   #   self.deposit = deposit
   #   self.withdraw = withdraw
   #   self.get_balance = get_balance
