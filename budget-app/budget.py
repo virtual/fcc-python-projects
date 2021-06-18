@@ -95,7 +95,7 @@ class Category:
     else:
       return False
 
-def create_spend_chart(self, categories =[]):
+def create_spend_chart(categories =[]):
   '''
   Creates a chart
 
@@ -131,10 +131,40 @@ def create_spend_chart(self, categories =[]):
 +            n  
 +            t  
   '''
+  names= []
+  percents = []
+  for charAt in range(0, len(categories)): # for each character of a word (via max length)
+    names.append(categories[charAt].name)
+    percents.append(categories[charAt].get_balance())
+  
+  
   chart = 'Percentage spent by category\n'
+  cols = len(categories)
+  # print (cols)
   for iter in range(100, 0, -10):
-    chart = chart + str(iter).rjust(3, ' ') + '|' + (' '*10) + '\n'
-    # print(chart)
+    chart = chart + str(iter).rjust(3, ' ') + '|' + (' '*1)
+    for wordAt in range(0, cols): # 0 1 2 
+      # print(percents[wordAt])
+      if (percents[wordAt] > iter): 
+        chart = chart + " o"
+      else:
+        chart = chart + "  "
+    chart = chart + '\n'
+
+  
+  chart = chart + "     " + "-"*cols + "----\n      "
+  
+  longest = max(names, key=len)
+  # print(longest)
+  for charAt in range(0, len(longest)): # for each character of a word (via max length)
+    for wordAt in range(0, cols): # 0 1 2 
+      if (charAt < len(names[wordAt])):
+        chart = chart + names[wordAt][charAt] + " "
+      else:
+        chart = chart + "  "
+    chart = chart + "\n      "
+  
+  print(chart)
   return chart
   #   self.deposit = deposit
   #   self.withdraw = withdraw
