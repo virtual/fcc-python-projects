@@ -69,7 +69,6 @@ class Category:
     for iter in range(len(self.ledger)):
       amount = (float(self.ledger[iter]['amount']))
       total = total + amount
-    # print('total:', total)
     return total
 
   def transfer(self, amount, targetCategory):
@@ -95,79 +94,53 @@ class Category:
     else:
       return False
 
+def get_withdrawals(category):
+  totalWithdrawals = 0
+  for iter in range(len(category.ledger)):
+    amount = float(category.ledger[iter]['amount'])
+    if (amount < 0):
+      totalWithdrawals = totalWithdrawals + amount
+  return abs(totalWithdrawals)
+
 def create_spend_chart(categories =[]):
   '''
-  Creates a chart
+  Creates a bar chart
 
   :param list categories: list of categories
-  :return: bar chart of spending
+  :return: bar chart of percents spent by category
   :rtype: str
 
-  The chart should show the percentage spent in each category passed in to the function. The percentage spent should be calculated only with withdrawals and not with deposits. Down the left side of the chart should be labels 0 - 100. The "bars" in the bar chart should be made out of the "o" character. The height of each bar should be rounded down to the nearest 10. The horizontal line below the bars should go two spaces past the final bar. Each category name should be written vertically below the bar. There should be a title at the top that says "Percentage spent by category".
-
-+ 100|          
-+  90|          
-+  80|          
-+  70|    o     
-+  60|    o     
-+  50|    o     
-+  40|    o     
-+  30|    o     
-+  20|    o  o  
-+  10|    o  o  
-+   0| o  o  o  
-+     ----------
-+      B  F  E  
-+      u  o  n  
-+      s  o  t  
-+      i  d  e  
-+      n     r  
-+      e     t  
-+      s     a  
-+      s     i  
-+            n  
-+            m  
-+            e  
-+            n  
-+            t  
   '''
   names= []
-  percents = []
-  for charAt in range(0, len(categories)): # for each character of a word (via max length)
-    names.append(categories[charAt].name)
-    percents.append(categories[charAt].get_balance())
+  withdrawals = []
   
+  for category in range(0, len(categories)): # for each character of a word (via max length)
+    names.append(categories[category].name)
+    withdrawals.append(get_withdrawals(categories[category]))
   
+  sumPercents = sum(withdrawals)
+
   chart = 'Percentage spent by category\n'
   cols = len(categories)
-  # print (cols)
-  for iter in range(100, 0, -10):
+  for iter in range(100, -10, -10):
     chart = chart + str(iter).rjust(3, ' ') + '|' + (' '*1)
     for wordAt in range(0, cols): # 0 1 2 
-      # print(percents[wordAt])
-      if (percents[wordAt] > iter): 
-        chart = chart + " o"
+      percent = (withdrawals[wordAt] / sumPercents) * 100
+      if (percent >= iter): 
+        chart = chart + "o"
       else:
-        chart = chart + "  "
+        chart = chart + " "
+      chart = chart + ' ' * 2
     chart = chart + '\n'
-
+  chart = chart + "    " + "--"*cols + "----"
   
-  chart = chart + "     " + "-"*cols + "----\n      "
-  
-  longest = max(names, key=len)
-  # print(longest)
-  for charAt in range(0, len(longest)): # for each character of a word (via max length)
+  longestName = max(names, key=len)
+  for charAt in range(0, len(longestName)): # for each character of a word (via max length)
+    chart = chart + "\n     "
     for wordAt in range(0, cols): # 0 1 2 
       if (charAt < len(names[wordAt])):
-        chart = chart + names[wordAt][charAt] + " "
+        chart = chart + names[wordAt][charAt] + "  "
       else:
-        chart = chart + "  "
-    chart = chart + "\n      "
+        chart = chart + "   "
   
-  print(chart)
   return chart
-  #   self.deposit = deposit
-  #   self.withdraw = withdraw
-  #   self.get_balance = get_balance
-  #   self.transfer = transfer
-  #   self.check_funds = check_funds
