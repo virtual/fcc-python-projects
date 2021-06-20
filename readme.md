@@ -7,4 +7,4 @@
 1. `arithmetic-formatter` - 2021/05/09
 1. `time-calculator` - 2021/06/03
 1. `budget-app` - 2021/06/18
-1. `polygon-calc`
+1. `polygon-calc` - 2021/06/20
