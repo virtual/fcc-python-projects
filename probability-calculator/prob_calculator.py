@@ -7,12 +7,15 @@ class Hat:
 
 # red=0, orange=0, black=0, blue=0, pink=0, green=0, striped=0
   def __init__(self, **kwargs):
-
+    self.contents = [] # Need to reset for some reason
     for arg in kwargs:
       if (kwargs[arg] > 0):
         # print('!',arg, kwargs[arg])
         for iter in range(0, kwargs[arg]):
           self.contents.append(arg)  
+    
+    print('created',self.contents)
+    
     return None
 
   def __str__(self):
@@ -29,26 +32,25 @@ class Hat:
     If the number of balls to draw exceeds the available quantity, return all the balls.
     '''
     contents = copy.copy(self.contents)
-    comparator = set(contents)
+    # comparator = set(contents)
     randoBalls = []
-    print('count', count)
-    if (count >= len(comparator)):
+    if (count < len(randoBalls)):
+      return randoBalls
+    elif (count > len(contents)):
       return contents
     else:
       for iter in range(0, count):
-        if len(comparator) > 0:
+        while len(randoBalls) < count:
           randomSelection = random.choice(contents)
-          print(contents)
-          contents = [i for i in randoBalls if i != randomSelection]
-          comparator.remove(randomSelection)
-          print(contents)
-          randoBalls.append('!',randomSelection)
+          print('r',randomSelection)
+          contents.remove(randomSelection)
+          randoBalls.append(randomSelection)
         else:
           break
      
-    print('@@',randoBalls)
+    self.contents = contents
     randoBalls = sorted(randoBalls, key = str)
-    print ('##',randoBalls)
+    print ('plucked out', randoBalls)
     return randoBalls
 
 
