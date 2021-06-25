@@ -15,12 +15,7 @@ class Hat:
       if (kwargs[arg] > 0):
         for iter in range(0, kwargs[arg]):
           self.contents.append(arg)  
-    
-    
     return None
-
-  def __str__(self):
-    return 'mew'
   
   def draw(self, count = 0):
     '''
@@ -59,45 +54,34 @@ class Hat:
   # balls and their counts from a 
   # list of balls
   def countBalls(self, picks):
-    # print(picks)
     uniquePicks = list(set(copy.copy(picks)))
-    # print(uniquePicks)
     balls = {}
-    # print(balls)
     for iter in range(0, len(uniquePicks)):
       ballType = uniquePicks[iter]
-      # print("!",ballType)
       count = picks.count(ballType)
       balls[ballType] = count
-    sortedList = {}
     sortedList = dict(sorted(balls.items(), key=operator.itemgetter(0)))
     return sortedList
 
-  # dictPicks yep.
   def listBallsFromCount(self, dictPicks):
-    # for num in range(0, dictPicks.keys()):
     newDict = []
-    for (key, value) in dictPicks.items():
-    # Check if key is even then add pair to new dictionary
-      for iter in (range(0, value)):
+    for (key, count) in dictPicks.items():
+    # Add each value 'count' times to list 
+      for iter in (range(0, count)):
         newDict.append(key)
     return newDict
 
+# Check if the given list (listIn) is a complete subset of listFull
 def compareLists(listIn, listFull):
   matches = 0
-  # print(listIn, listFull)
   for iter in range(0, len(listIn)):
-    # print(list([listIn[iter]]), (listFull))
     if(set([listIn[iter]]).issubset(set(listFull))):
-      # print('match')
       listFull.remove(listIn[iter])
       matches = matches + 1
   if (matches == len(listIn)):
     return True
   else: 
     return False
-
-
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
   '''
@@ -114,27 +98,14 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
   num_balls_drawn=5,
   num_experiments=2000)
   '''
-  count = 0
+  matches = 0
   expected_balls = hat.listBallsFromCount(expected_balls)
   for iter in range(0, num_experiments):
-    # hatObj had to be in the for loop!
     hatObj = copy.copy(hat)
-    # print('eb',expected_balls)
-    # print(iter, num_balls_drawn, hatObj.draw(num_balls_drawn))
-    # print(len(hatObj.contents))
-    # print("!",hatObj.draw(num_balls_drawn))
-    
     randomSet = hatObj.draw(num_balls_drawn)
 
     #if expected_balls is a partial set of randomSet
-    # print("RS",randomSet, expected_balls)
-    # if(set(randomSet).issubset(set(expected_balls))):
-    # if(set(expected_balls).issuperset(set(randomSet))):
-    
-    # if  all(elem in expected_balls  for elem in randomSet):
     if compareLists(expected_balls, randomSet):
-      # print(expected_balls, "IS IN", randomSet )
-      count = count + 1
-  # print(count, "Matches")
+      matches = matches + 1
 
-  return count/num_experiments
+  return matches/num_experiments
